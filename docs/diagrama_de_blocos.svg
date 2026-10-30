@@ -1,0 +1,227 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1010" viewBox="0 0 1600 1010" font-family="DejaVu Sans, Arial, Helvetica, sans-serif">
+  <defs>
+    <marker id="seta" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2c3e50"/>
+    </marker>
+    <marker id="setaR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/>
+    </marker>
+    <marker id="setaC" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#7f8c8d"/>
+    </marker>
+    <marker id="setaW" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#0e7c66"/>
+    </marker>
+    <style>
+      .t  { font-size: 15px; font-weight: bold; text-anchor: middle; }
+      .s  { font-size: 12.5px; fill: #1f2d3a; text-anchor: middle; }
+      .l  { font-size: 12.5px; font-style: italic; fill: #2c3e50; }
+      .lc { font-size: 12.5px; font-style: italic; fill: #2c3e50; text-anchor: middle; }
+      .n  { font-size: 13px; font-weight: bold; fill: #fff; text-anchor: middle; dominant-baseline: central; }
+      .lin { stroke: #2c3e50; stroke-width: 2.4; fill: none; }
+      .fb  { stroke: #c0392b; stroke-width: 2.6; fill: none; }
+      .net { stroke: #0e7c66; stroke-width: 2.2; fill: none; }
+      .leg { font-size: 13px; fill: #1f2d3a; }
+    </style>
+  </defs>
+
+  <rect width="1600" height="1010" fill="#ffffff"/>
+
+  <!-- Titulo -->
+  <text x="800" y="42" text-anchor="middle" font-size="25" font-weight="bold" fill="#17202a">Diagrama de blocos – Controle ON-OFF de temperatura com ESP32</text>
+  <text x="800" y="68" text-anchor="middle" font-size="14" fill="#566573">Malha fechada: referência → erro → controlador C(s) → atuador → planta G(s) → saída, com realimentação pelo sensor H(s)</text>
+
+  <!-- Paineis de ENTRADAS e SAIDAS -->
+  <rect x="18" y="92" width="240" height="640" rx="10" fill="#ebf5fb"/>
+  <text x="138" y="120" text-anchor="middle" font-size="17" font-weight="bold" fill="#2471a3">ENTRADAS</text>
+  <rect x="1342" y="92" width="240" height="640" rx="10" fill="#e9f7ef"/>
+  <text x="1462" y="120" text-anchor="middle" font-size="17" font-weight="bold" fill="#1e8449">SAÍDAS</text>
+
+  <!-- Limite do ESP32 -->
+  <rect x="282" y="150" width="358" height="580" rx="8" fill="none" stroke="#7d3c98" stroke-width="2" stroke-dasharray="9 6"/>
+  <text x="628" y="172" text-anchor="end" font-size="14" font-weight="bold" fill="#7d3c98">ESP32 (firmware)</text>
+
+  <!-- (1) Referencia -->
+  <rect x="36" y="200" width="204" height="120" rx="9" fill="#d6eaf8" stroke="#2471a3" stroke-width="2.2"/>
+  <text x="138" y="226" class="t" style="fill:#2471a3">Sinal de Referência</text>
+  <text x="138" y="250" class="s" font-weight="bold">T_Limite = 25 °C</text>
+  <text x="138" y="272" class="s">histerese no código:</text>
+  <text x="138" y="290" class="s">liga &gt; 28 °C · desliga &lt; 25 °C</text>
+  <text x="138" y="308" class="s" style="fill:#566573">(constantes no firmware)</text>
+
+  <!-- Entrada de configuracao de rede -->
+  <rect x="36" y="590" width="204" height="120" rx="9" fill="#d6eaf8" stroke="#2471a3" stroke-width="2.2"/>
+  <text x="138" y="616" class="t" style="fill:#2471a3">Configuração Wi-Fi</text>
+  <text x="138" y="640" class="s">ssid e password</text>
+  <text x="138" y="658" class="s">definidos no firmware</text>
+  <text x="138" y="680" class="s" font-weight="bold" style="fill:#b03a2e">mesma rede do</text>
+  <text x="138" y="697" class="s" font-weight="bold" style="fill:#b03a2e">computador</text>
+
+  <!-- (2) Somador -->
+  <circle cx="330" cy="260" r="27" fill="#f4ecf7" stroke="#7d3c98" stroke-width="2.4"/>
+  <text x="330" y="268" text-anchor="middle" font-size="24" fill="#7d3c98">Σ</text>
+  <text x="300" y="242" font-size="20" font-weight="bold" fill="#7d3c98">+</text>
+  <text x="343" y="309" font-size="24" font-weight="bold" fill="#c0392b">−</text>
+  <text x="345" y="218" text-anchor="middle" font-size="11.5" fill="#7d3c98">Ponto de soma</text>
+
+  <line x1="240" y1="260" x2="301" y2="260" class="lin" marker-end="url(#seta)"/>
+  <text x="246" y="250" class="l">r(t)</text>
+
+  <!-- erro -->
+  <line x1="357" y1="260" x2="418" y2="260" class="lin" marker-end="url(#seta)"/>
+  <text x="388" y="250" class="lc">e(t)</text>
+  <text x="343" y="352" class="l" font-size="11.5" style="fill:#7d3c98">e(t) = T_Limite − T_medida</text>
+
+  <!-- (3) Controlador -->
+  <rect x="420" y="195" width="208" height="130" rx="9" fill="#e8daef" stroke="#7d3c98" stroke-width="2.2"/>
+  <text x="524" y="221" class="t" style="fill:#7d3c98">Controlador C(s)</text>
+  <text x="524" y="244" class="s">ESP32 – lógica ON-OFF</text>
+  <text x="524" y="262" class="s">com histerese</text>
+  <text x="524" y="284" class="s">ON se T &gt; 28 °C (e &lt; −3)</text>
+  <text x="524" y="302" class="s">OFF se T &lt; 25 °C (e &gt; 0)</text>
+
+  <!-- (4) Sinal de controle -->
+  <line x1="628" y1="260" x2="722" y2="260" class="lin" marker-end="url(#seta)"/>
+  <text x="681" y="232" class="lc">u(t)</text>
+  <text x="681" y="250" class="lc">ON/OFF</text>
+  <text x="681" y="280" class="lc">GPIO 4</text>
+
+  <!-- (5) Atuador -->
+  <rect x="724" y="195" width="200" height="130" rx="9" fill="#fdebd0" stroke="#ca6f1e" stroke-width="2.2"/>
+  <text x="824" y="221" class="t" style="fill:#ca6f1e">Atuador</text>
+  <text x="824" y="245" class="s">Módulo relé 5 V</text>
+  <text x="824" y="264" class="s">+ Cooler</text>
+  <text x="824" y="283" class="s">+ Fonte externa 12 V</text>
+  <text x="824" y="304" class="s" style="fill:#566573">(contatos COM / NO)</text>
+
+  <line x1="924" y1="260" x2="1006" y2="260" class="lin" marker-end="url(#seta)"/>
+  <text x="965" y="250" class="lc">fluxo de ar</text>
+
+  <!-- (6) Planta -->
+  <rect x="1008" y="195" width="200" height="130" rx="9" fill="#eaecee" stroke="#566573" stroke-width="2.2"/>
+  <text x="1108" y="221" class="t" style="fill:#424949">Planta / Processo G(s)</text>
+  <text x="1108" y="246" class="s">Ambiente cuja</text>
+  <text x="1108" y="265" class="s">temperatura é</text>
+  <text x="1108" y="284" class="s">controlada</text>
+  <text x="1108" y="305" class="s" style="fill:#566573">(troca de calor)</text>
+
+  <!-- perturbacao -->
+  <line x1="1108" y1="140" x2="1108" y2="193" stroke="#7f8c8d" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#setaC)"/>
+  <text x="1108" y="132" class="lc" style="fill:#7f8c8d">calor externo (perturbação)</text>
+
+  <!-- (7) Saida y(t) -->
+  <line x1="1208" y1="260" x2="1358" y2="260" class="lin" marker-end="url(#seta)"/>
+  <circle cx="1262" cy="260" r="5.5" fill="#2c3e50"/>
+  <text x="1300" y="250" class="lc">y(t)</text>
+
+  <rect x="1360" y="195" width="204" height="130" rx="9" fill="#d5f5e3" stroke="#1e8449" stroke-width="2.2"/>
+  <text x="1462" y="221" class="t" style="fill:#1e8449">Sinal de Saída</text>
+  <text x="1462" y="241" class="t" style="fill:#1e8449">Variável Controlada</text>
+  <text x="1462" y="266" class="s">Temperatura T(t)</text>
+  <text x="1462" y="285" class="s">do ambiente, lida</text>
+  <text x="1462" y="304" class="s">continuamente</text>
+
+  <!-- (8) Sensor + (9) Realimentacao -->
+  <polyline points="1262,260 1262,383" class="fb"/>
+  <path d="M 1262 383 A 7 7 0 0 0 1262 397" class="fb"/>
+  <polyline points="1262,397 1262,475 926,475" class="fb" marker-end="url(#setaR)"/>
+  <rect x="724" y="420" width="200" height="110" rx="9" fill="#d6eaf8" stroke="#2471a3" stroke-width="2.2"/>
+  <text x="824" y="446" class="t" style="fill:#2471a3">Sensor H(s)</text>
+  <text x="824" y="470" class="s">DS18B20 (1-Wire)</text>
+  <text x="824" y="489" class="s">GPIO 23 · pull-up 4,7 kΩ</text>
+  <text x="824" y="508" class="s">leitura a cada 2 s</text>
+
+  <polyline points="722,475 535,475" class="fb"/>
+  <path d="M 535 475 A 11 11 0 0 0 513 475" class="fb"/>
+  <polyline points="513,475 330,475 330,289" class="fb" marker-end="url(#setaR)"/>
+  <text x="430" y="497" class="lc" style="fill:#c0392b" font-weight="bold" font-size="12">Realimentação</text>
+  <text x="430" y="515" class="lc" style="fill:#c0392b">(feedback) T_medida</text>
+
+  <!-- Monitoramento: LCD -->
+  <line x1="524" y1="325" x2="524" y2="578" class="lin" marker-end="url(#seta)"/>
+  <circle cx="524" cy="390" r="5.5" fill="#2c3e50"/>
+  <line x1="524" y1="390" x2="1358" y2="390" class="lin" marker-end="url(#seta)"/>
+  <text x="824" y="381" class="lc">I²C (SDA GPIO 21 / SCL GPIO 22)</text>
+
+  <rect x="1360" y="345" width="204" height="90" rx="9" fill="#d5f5e3" stroke="#1e8449" stroke-width="2.2"/>
+  <text x="1462" y="371" class="t" style="fill:#1e8449">Saída local</text>
+  <text x="1462" y="395" class="s">LCD 16x2 (I²C)</text>
+  <text x="1462" y="414" class="s">Temp e Cooler ON/OFF</text>
+
+  <!-- Servidor web -->
+  <text x="514" y="560" class="l" text-anchor="end">temperatura + estado</text>
+  <rect x="300" y="580" width="330" height="130" rx="9" fill="#d1f2eb" stroke="#0e7c66" stroke-width="2.2"/>
+  <text x="465" y="606" class="t" style="fill:#0e7c66">Servidor web HTTP (porta 80)</text>
+  <text x="465" y="630" class="s">ESPAsyncWebServer</text>
+  <text x="465" y="651" class="s">/temperaturec · /temperaturef · /status</text>
+  <text x="465" y="672" class="s">página “/” atualiza a cada 2 s</text>
+
+  <line x1="240" y1="650" x2="298" y2="650" class="net" marker-end="url(#setaW)"/>
+
+  <!-- Wi-Fi -->
+  <line x1="630" y1="645" x2="778" y2="645" class="net" stroke-dasharray="8 5" marker-end="url(#setaW)"/>
+  <text x="704" y="628" class="lc" style="fill:#0e7c66" font-weight="bold">Wi-Fi (HTTP)</text>
+  <text x="704" y="668" class="lc" style="fill:#0e7c66">mesma rede</text>
+
+  <rect x="780" y="580" width="250" height="130" rx="9" fill="#d1f2eb" stroke="#0e7c66" stroke-width="2.2"/>
+  <text x="905" y="606" class="t" style="fill:#0e7c66">Computador (cliente)</text>
+  <text x="905" y="630" class="s">Python – requests</text>
+  <text x="905" y="651" class="s">GET /temperaturec e /status</text>
+  <text x="905" y="672" class="s">a cada 2 s (somente leitura)</text>
+
+  <line x1="1030" y1="645" x2="1358" y2="645" class="lin" marker-end="url(#seta)"/>
+  <text x="1194" y="635" class="lc">temperatura + estado do cooler</text>
+
+  <rect x="1360" y="560" width="204" height="150" rx="9" fill="#d5f5e3" stroke="#1e8449" stroke-width="2.2"/>
+  <text x="1462" y="586" class="t" style="fill:#1e8449">Saída gráfica</text>
+  <text x="1462" y="610" class="s">Fluxo de ar animado</text>
+  <text x="1462" y="629" class="s">azul (frio) → laranja</text>
+  <text x="1462" y="648" class="s">(quente)</text>
+  <text x="1462" y="670" class="s">ar acelera com</text>
+  <text x="1462" y="689" class="s">o cooler ligado</text>
+
+  <!-- Badges numerados (1 a 9) -->
+  <g>
+    <circle cx="44" cy="200" r="13" fill="#17202a"/><text x="44" y="200" class="n">1</text>
+    <circle cx="358" cy="236" r="13" fill="#17202a"/><text x="358" y="236" class="n">2</text>
+    <circle cx="428" cy="195" r="13" fill="#17202a"/><text x="428" y="195" class="n">3</text>
+    <circle cx="681" cy="305" r="13" fill="#17202a"/><text x="681" y="305" class="n">4</text>
+    <circle cx="732" cy="195" r="13" fill="#17202a"/><text x="732" y="195" class="n">5</text>
+    <circle cx="1016" cy="195" r="13" fill="#17202a"/><text x="1016" y="195" class="n">6</text>
+    <circle cx="1368" cy="195" r="13" fill="#17202a"/><text x="1368" y="195" class="n">7</text>
+    <circle cx="732" cy="420" r="13" fill="#17202a"/><text x="732" y="420" class="n">8</text>
+    <circle cx="330" cy="505" r="13" fill="#17202a"/><text x="330" y="505" class="n">9</text>
+  </g>
+
+  <!-- Aviso de rede -->
+  <rect x="18" y="752" width="1564" height="46" rx="8" fill="#fef5e7" stroke="#d68910" stroke-width="1.8"/>
+  <text x="800" y="781" text-anchor="middle" font-size="14.5" fill="#7e5109"><tspan font-weight="bold">Importante:</tspan> o computador que roda o programa gráfico precisa estar conectado à MESMA rede Wi-Fi configurada no código do ESP32 (ssid / password).</text>
+
+  <!-- Legenda numerada -->
+  <text x="40" y="836" font-size="15" font-weight="bold" fill="#17202a">Elementos da malha de controle</text>
+  <g class="leg">
+    <text x="40"  y="864"><tspan font-weight="bold">1</tspan>  Sinal de Referência – T_Limite (25 °C; liga &gt; 28 °C)</text>
+    <text x="40"  y="888"><tspan font-weight="bold">2</tspan>  Ponto de Soma/Subtração – Erro e(t)</text>
+    <text x="40"  y="912"><tspan font-weight="bold">3</tspan>  Controlador C(s) – ESP32, lógica ON-OFF</text>
+    <text x="560" y="864"><tspan font-weight="bold">4</tspan>  Sinal de Controle u(t) – ativação do relé/cooler</text>
+    <text x="560" y="888"><tspan font-weight="bold">5</tspan>  Atuador – relé + cooler + fonte externa</text>
+    <text x="560" y="912"><tspan font-weight="bold">6</tspan>  Planta/Processo G(s) – ambiente</text>
+    <text x="1080" y="864"><tspan font-weight="bold">7</tspan>  Saída / Variável Controlada – T(t)</text>
+    <text x="1080" y="888"><tspan font-weight="bold">8</tspan>  Elemento de Medição H(s) – DS18B20</text>
+    <text x="1080" y="912"><tspan font-weight="bold">9</tspan>  Realimentação (feedback) – T_medida</text>
+  </g>
+
+  <!-- Legenda de cores -->
+  <g font-size="12.5" fill="#1f2d3a">
+    <rect x="40" y="948" width="22" height="16" fill="#d6eaf8" stroke="#2471a3" stroke-width="1.6"/><text x="70" y="961">Entrada / sensor</text>
+    <rect x="215" y="948" width="22" height="16" fill="#e8daef" stroke="#7d3c98" stroke-width="1.6"/><text x="245" y="961">Controle (ESP32)</text>
+    <rect x="390" y="948" width="22" height="16" fill="#fdebd0" stroke="#ca6f1e" stroke-width="1.6"/><text x="420" y="961">Atuador</text>
+    <rect x="510" y="948" width="22" height="16" fill="#eaecee" stroke="#566573" stroke-width="1.6"/><text x="540" y="961">Planta</text>
+    <rect x="620" y="948" width="22" height="16" fill="#d1f2eb" stroke="#0e7c66" stroke-width="1.6"/><text x="650" y="961">Comunicação</text>
+    <rect x="770" y="948" width="22" height="16" fill="#d5f5e3" stroke="#1e8449" stroke-width="1.6"/><text x="800" y="961">Saída</text>
+    <line x1="880" y1="956" x2="920" y2="956" stroke="#c0392b" stroke-width="2.6"/><text x="928" y="961">realimentação</text>
+    <line x1="1050" y1="956" x2="1090" y2="956" stroke="#0e7c66" stroke-width="2.2" stroke-dasharray="8 5"/><text x="1098" y="961">Wi-Fi</text>
+    <line x1="1170" y1="956" x2="1210" y2="956" stroke="#7f8c8d" stroke-width="2" stroke-dasharray="6 4"/><text x="1218" y="961">perturbação</text>
+  </g>
+  <text x="800" y="995" text-anchor="middle" font-size="12" fill="#7b8a8b">Alimentação: ESP32 via USB (5 V) · módulo relé 5 V do ESP32 · cooler 12 V por fonte externa</text>
+</svg>

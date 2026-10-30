@@ -1,0 +1,22 @@
+PROJETO INTEGRADOR - Monitoramento e controle de temperatura com ESP32
+
+COMO RODAR NO WINDOWS (Prompt de Comando, dentro desta pasta):
+  py -3.12 -m pip install -r requirements.txt
+  py -3.12 src\projeto_integrador.py
+
+Conectar direto ao ESP32:
+  py -3.12 src\projeto_integrador.py --ip 192.168.0.50
+
+IMPORTANTE: o computador precisa estar na MESMA rede Wi-Fi configurada
+no código do ESP32 (ssid / password em firmware\monitoramento_esp32).
+
+INTERFACE:
+- INICIAR CICLO: demonstração automática
+- Barra de temperatura: teste manual (modo demo)
+- CONECTAR ESP32: abre uma janela para digitar o IP (o IP não fica visível no painel)
+- MODO DEMO: volta à simulação local
+
+O programa Python só lê os dados (/temperaturec e /status); quem comanda o relé é o ESP32.
+O sensor DS18B20 mede a temperatura em um ponto; o fluxo luminoso é uma visualização artística.
+
+Mais detalhes, diagrama de blocos e ligações: README.md
