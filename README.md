@@ -3,7 +3,7 @@
 Projeto Integrador (PI) das disciplinas **Sistemas Embarcados, Sistemas de Controle e Computação Gráfica** — UNASP
 Prof. Robson Souza, Fabiano Alves e Abraao da Silva
 
-**Integrantes:** _Laís Gonçalves, Sabrina Medina_
+**Integrantes:** _Laís Gonçalves, Sabrina Medina, Guilherme Borges_
 
 ## O que o sistema faz
 
